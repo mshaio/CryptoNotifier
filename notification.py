@@ -32,9 +32,12 @@ class CrytoNotifier:
         """
         coins_prices = {}
         for coin in self.coins:
-            response = requests.get("https://api.coingecko.com/api/v3/coins/"+str(coin))
-            data = response.json()
-            coins_prices[str(coin)] = data['market_data']['current_price']['cad']
+            try:
+                response = requests.get("https://api.coingecko.com/api/v3/coins/"+str(coin))
+                data = response.json()
+                coins_prices[str(coin)] = data['market_data']['current_price']['cad']
+            except:
+                coins_prices[str(coin)] = "ERROR"
         return coins_prices
         
 coins = ['ethereum','litecoin','bitcoin']
@@ -43,7 +46,7 @@ ethereum_price = basic_coin_data[coins[0]]
 litecoin_price = basic_coin_data[coins[1]]
 bitcoin_price = basic_coin_data[coins[2]]
 
-Notifier.notify(f'Ethereum @ ${ethereum_price} \nLitecoin @ ${litecoin_price} \nBitcoin @ ${bitcoin_price}')
+Notifier.notify(f'Ethereum @ ${ethereum_price} \nLitecoin @ ${litecoin_price} \nBitcoin @ ${bitcoin_price}',appIcon="https://img.icons8.com/nolan/2x/ethereum.png")
 
 Notifier.remove(os.getpid())
 Notifier.list(os.getpid())
